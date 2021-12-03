@@ -47,3 +47,12 @@ class mag_loss(object):
             loss = torch.mean(torch.abs(out_mags-lab_mags))
 
         return loss
+    
+    def get_mag(self, ipt):
+
+        specs = self.stft(ipt)
+        real = specs[:,:self.fft_len//2+1]
+        imag = specs[:,self.fft_len//2+1:]
+        spec_mags = torch.sqrt(real**2+imag**2+1e-8)
+
+        return spec_mags
