@@ -31,6 +31,7 @@ class stftm_loss(object):
         imag = specs[:,self.fft_len//2+1:]
 
         return real, imag
+    
 
 
 
@@ -56,4 +57,5 @@ class mag_loss(object):
         spec_mags = torch.sqrt(real**2+imag**2+1e-8)
 
         return spec_mags
+
 
