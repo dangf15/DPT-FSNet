@@ -106,13 +106,13 @@ class Dual_Transformer(nn.Module):
         for i in range(len(self.row_trans)):
             row_input = output.permute(2, 0, 3, 1).contiguous().view(t, b*f, -1)  # [t, b*f, c]
             row_output = self.row_trans[i](row_input)  
-            row_output = row_output.view(dim1, b, dim2, -1).permute(1, 3, 2, 0).contiguous()  # [b, c, t, f]
+            row_output = row_output.view(t, b, f, -1).permute(1, 3, 0, 2).contiguous()  # [b, c, t, f]
             row_output = self.row_norm[i](row_output)  
             output = output + row_output  
 
             col_input = output.permute(3, 0, 2, 1).contiguous().view(f, b*t, -1)  # [f, b*t, c]
             col_output = self.col_trans[i](col_input)  
-            col_output = col_output.view(dim2, b, dim1, -1).permute(1, 3, 0, 2).contiguous()  # [b, c, t, f]
+            col_output = col_output.view(f, b, t, -1).permute(1, 3, 2, 0).contiguous()  # [b, c, t, f]
             col_output = self.col_norm[i](col_output)  
             output = output + col_output  
 
